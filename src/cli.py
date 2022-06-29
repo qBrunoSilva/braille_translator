@@ -30,7 +30,8 @@ class CLI:
         # Lê o arquivo de texto
 
         if not os.path.isfile(path) and not path.lower().endswith(".txt"):
-            raise Exception(f"File {path} does not exist or is not a txt file")
+            raise Exception(
+                f"Arquivo {path} não existe ou não é um arquivo .txt")
 
         with open(os.path.abspath(path), "r") as f:
             return f.read()
@@ -46,9 +47,9 @@ class CLI:
 
         text = self.read_txt_file(self.args.path)
 
-        print("Original text:", text + "\n")
+        print("Text original:", text + "\n")
         result = Translator().translate(text=text)
-        print("Result translator:", result)
+        print("Texto traduzido:", result)
 
         self.save_txt_file(self.args.output, result)
 

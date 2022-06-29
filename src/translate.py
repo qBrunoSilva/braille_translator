@@ -25,15 +25,6 @@ class Translator:
                 result.append(item)
         return result
 
-    def trim(self, word: str) -> str:
-        # Remova a pontuação da palavra
-
-        while len(word) != 0 and not word[0].isalnum():
-            word = word[1:]
-        while len(word) != 0 and not word[-1].isalnum():
-            word = word[:-1]
-        return word
-
     def numbers_handler(self, word: str) -> str:
         # Substitua cada grupo de números em uma palavra para sua
         # respectiva representação em braille
@@ -116,9 +107,9 @@ class Translator:
             for i in range(0, len(shavings)):
                 if i == index and trimmed_word != "":
                     braille += self.convert_word_to_braille(trimmed_word) \
-                        .replace("  ", "(space)") \
+                        .replace("  ", "(espaco)") \
                         .replace(" ", "") \
-                        .replace("(space)", "  ")
+                        .replace("(espaco)", "  ")
 
                 braille += self.convert_word_to_braille(shavings[i])
 
@@ -133,7 +124,7 @@ class Translator:
         # trocando os caracteres de controle
 
         return word[:-1] \
-            .replace("  ", " (space) ") \
+            .replace("  ", " (espaco) ") \
             .replace(CAPITAL, "46") \
             .replace(NUMBER, "3456")
 
@@ -145,11 +136,10 @@ class Translator:
         for word in words:
             word = self.numbers_handler(word)
             word = self.capital_letters_handler(word)
-            trimmed_word = self.trim(word)
             untrimmed_word = word
-            index = untrimmed_word.find(trimmed_word)
-            shavings = untrimmed_word.replace(trimmed_word, "")
+            index = untrimmed_word.find(word)
+            shavings = untrimmed_word.replace(untrimmed_word, "")
             braille_text = self.build_braille_word(
-                trimmed_word, shavings, index, braille_text) + " "
+                untrimmed_word, shavings, index, braille_text) + " "
 
         return self.trate_word(braille_text)
